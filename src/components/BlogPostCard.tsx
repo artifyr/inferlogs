@@ -12,7 +12,7 @@ export const BlogPostCard = ({ post }: BlogPostCardProps) => {
   return (
     <article
       onClick={() => navigate(`/post/${post.id}`)}
-      className="group cursor-pointer p-6 border border-border rounded-lg hover:border-foreground/20 transition-all bg-card"
+      className="group cursor-pointer p-4 md:p-6 border border-border rounded-lg hover:border-foreground/30 hover:shadow-lg hover:scale-[1.02] transition-all duration-300 bg-card"
     >
       <div className="flex items-start justify-between gap-4 mb-3">
         <Badge variant="outline" className="text-xs">

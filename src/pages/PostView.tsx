@@ -7,14 +7,15 @@ import { ArrowLeft, Edit, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { SearchModal } from '@/components/SearchModal';
 import { toast } from 'sonner';
+import { useAuth } from '@/contexts/AuthContext';
 
 const PostView = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [searchOpen, setSearchOpen] = useState(false);
+  const { isAuthenticated } = useAuth();
   
   const post = blogPosts.find(p => p.id === id);
-  const isAdmin = import.meta.env.VITE_ADMIN_EMAILS?.includes('admin@example.com');
 
   if (!post) {
     return (
@@ -69,7 +70,7 @@ const PostView = () => {
           <div className="flex items-center justify-between mb-8 pb-6 border-b border-border">
             <p className="text-muted-foreground">By {post.author}</p>
             
-            {isAdmin && (
+            {isAuthenticated && (
               <div className="flex gap-2">
                 <Button
                   onClick={() => navigate(`/edit/${post.id}`)}
@@ -77,7 +78,7 @@ const PostView = () => {
                   size="sm"
                 >
                   <Edit className="w-4 h-4 mr-2" />
-                  Edit
+                  <span className="hidden sm:inline">Edit</span>
                 </Button>
                 <Button
                   onClick={handleDelete}
@@ -85,7 +86,7 @@ const PostView = () => {
                   size="sm"
                 >
                   <Trash2 className="w-4 h-4 mr-2" />
-                  Delete
+                  <span className="hidden sm:inline">Delete</span>
                 </Button>
               </div>
             )}

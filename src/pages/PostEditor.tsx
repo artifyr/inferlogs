@@ -10,13 +10,14 @@ import { blogPosts } from '@/data/posts';
 import { ArrowLeft, Save, Eye } from 'lucide-react';
 import { toast } from 'sonner';
 import { SearchModal } from '@/components/SearchModal';
+import { useAuth } from '@/contexts/AuthContext';
 
 const PostEditor = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [searchOpen, setSearchOpen] = useState(false);
+  const { isAuthenticated } = useAuth();
   const isEdit = Boolean(id);
-  const isAdmin = import.meta.env.VITE_ADMIN_EMAILS?.includes('admin@example.com');
 
   const existingPost = isEdit ? blogPosts.find(p => p.id === id) : null;
 
@@ -29,11 +30,11 @@ const PostEditor = () => {
   });
 
   useEffect(() => {
-    if (!isAdmin) {
+    if (!isAuthenticated) {
       toast.error('Admin access required');
       navigate('/');
     }
-  }, [isAdmin, navigate]);
+  }, [isAuthenticated, navigate]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -49,7 +50,7 @@ const PostEditor = () => {
     toast.info('Preview feature coming soon');
   };
 
-  if (!isAdmin) {
+  if (!isAuthenticated) {
     return null;
   }
 

@@ -1,4 +1,4 @@
-# Inferlysis Inferlogs
+# Inferlogs
 
 A modern, full-stack blogging platform built with a focus on performance, developer experience, and clean design. This application serves as a demonstration of building a content-focused web app using a modern tech stack.
 

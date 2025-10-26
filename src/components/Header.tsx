@@ -19,7 +19,7 @@ export const Header = ({ onSearchClick, showNewPost = true }: HeaderProps) => {
           onClick={() => navigate('/')}
           className="text-xl font-semibold text-foreground hover:opacity-80 transition-opacity"
         >
-          Inferlysis
+          Neuroinformed
         </button>
         
         <div className="flex items-center gap-2 md:gap-4">

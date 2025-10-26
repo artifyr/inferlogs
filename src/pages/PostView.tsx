@@ -1,21 +1,61 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { Header } from '@/components/Header';
-import { blogPosts } from '@/data/posts';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Edit, Trash2 } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { SearchModal } from '@/components/SearchModal';
 import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
+import { supabaseUrl, supabaseKey } from '@/lib/supabaseClient';
+import { BlogPost } from '@/types/blog';
 
 const PostView = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [searchOpen, setSearchOpen] = useState(false);
   const { isAuthenticated } = useAuth();
-  
-  const post = blogPosts.find(p => p.id === id);
+  const [post, setPost] = useState<BlogPost | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPost = async () => {
+      const response = await fetch(`${supabaseUrl}/rest/v1/posts?id=eq.${id}&select=*`, {
+        headers: {
+          'apikey': supabaseKey,
+          'Authorization': `Bearer ${supabaseKey}`,
+        },
+      });
+      const data = await response.json();
+      if (data.length > 0) {
+        const postData = data[0];
+        setPost({
+          id: postData.id,
+          title: postData.title,
+          category: postData.category,
+          excerpt: postData.excerpt,
+          content: postData.content,
+          createdAt: postData.created_at,
+          updatedAt: postData.updated_at,
+          author: postData.author,
+        });
+      }
+      setLoading(false);
+    };
+
+    fetchPost();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header onSearchClick={() => setSearchOpen(true)} showNewPost={false} />
+        <div className="container mx-auto px-4 py-12 max-w-4xl text-center">
+          <p>Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!post) {
     return (
@@ -32,9 +72,22 @@ const PostView = () => {
     );
   }
 
-  const handleDelete = () => {
-    toast.success('Post deleted successfully');
-    navigate('/');
+  const handleDelete = async () => {
+    const response = await fetch(`${supabaseUrl}/rest/v1/posts?id=eq.${id}`, {
+      method: 'DELETE',
+      headers: {
+        'apikey': supabaseKey,
+        'Authorization': `Bearer ${supabaseKey}`,
+      },
+    });
+
+    if (response.ok) {
+      toast.success('Post deleted successfully');
+      navigate('/');
+    } else {
+      toast.error('Failed to delete post');
+      console.error(await response.text());
+    }
   };
 
   return (
@@ -92,8 +145,17 @@ const PostView = () => {
             )}
           </div>
 
-          <div className="text-foreground/90 leading-relaxed space-y-4 whitespace-pre-line">
-            {post.content}
+          <div className="text-foreground/90 leading-relaxed space-y-4">
+            {post.content.split('\n').map((line, index) => {
+              if (line.trim() === '') return <br key={index} />;
+
+              const formattedLine = line
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                .replace(/__(.*?)__/g, '<u>$1</u>');
+
+              return <p key={index} dangerouslySetInnerHTML={{ __html: formattedLine }} />;
+            })}
           </div>
         </article>
       </main>
@@ -101,7 +163,6 @@ const PostView = () => {
       <SearchModal
         open={searchOpen}
         onClose={() => setSearchOpen(false)}
-        posts={blogPosts}
       />
     </div>
   );

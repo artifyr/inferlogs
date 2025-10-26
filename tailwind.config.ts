@@ -85,6 +85,9 @@ export default {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
+      borderWidth: {
+        DEFAULT: '2px',
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],

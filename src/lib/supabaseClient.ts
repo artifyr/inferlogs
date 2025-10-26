@@ -1,0 +1,2 @@
+export const supabaseUrl = 'https://gunnbbrshbimztlijuvn.supabase.co'
+export const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd1bm5iYnJzaGJpbXp0bGlqdXZuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE0MDYzNTAsImV4cCI6MjA3Njk4MjM1MH0.IwCRHrojZdU1iYn25xdjyeJGGNGQionfbBbqz0tdXn0'

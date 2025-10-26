@@ -1,4 +1,4 @@
-import { Search, Plus, LogIn, LogOut } from 'lucide-react';
+import { Search, Plus, LogIn, LogOut, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -19,7 +19,7 @@ export const Header = ({ onSearchClick, showNewPost = true }: HeaderProps) => {
           onClick={() => navigate('/')}
           className="text-xl font-semibold text-foreground hover:opacity-80 transition-opacity"
         >
-          DeepTech Insights
+          Inferlysis
         </button>
         
         <div className="flex items-center gap-2 md:gap-4">
@@ -40,6 +40,18 @@ export const Header = ({ onSearchClick, showNewPost = true }: HeaderProps) => {
             >
               <Plus className="w-4 h-4" />
               <span className="hidden sm:inline">New Post</span>
+            </Button>
+          )}
+
+          {isAuthenticated && (
+            <Button
+              onClick={() => navigate('/admin')}
+              variant="outline"
+              size="sm"
+              className="gap-2"
+            >
+              <Shield className="w-4 h-4" />
+              <span className="hidden sm:inline">Admin</span>
             </Button>
           )}
 

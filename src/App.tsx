@@ -9,6 +9,8 @@ import PostView from "./pages/PostView";
 import PostEditor from "./pages/PostEditor";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
+import AdminDashboard from "./pages/AdminDashboard";
+import { Dock } from "@/components/ui/Dock";
 
 const queryClient = new QueryClient();
 
@@ -25,8 +27,10 @@ const App = () => (
             <Route path="/login" element={<Login />} />
             <Route path="/new" element={<PostEditor />} />
             <Route path="/edit/:id" element={<PostEditor />} />
+            <Route path="/admin" element={<AdminDashboard />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
+          <Dock />
         </BrowserRouter>
       </AuthProvider>
     </TooltipProvider>

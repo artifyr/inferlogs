@@ -1,7 +1,7 @@
 export interface BlogPost {
   id: string;
   title: string;
-  category: 'AI' | 'Robotics' | 'Neurology' | 'Quantum Computing' | 'Biotechnology';
+  category: string;
   content: string;
   excerpt: string;
   createdAt: string;

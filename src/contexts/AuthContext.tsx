@@ -22,6 +22,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const adminEmail = import.meta.env.VITE_ADMIN_EMAIL;
     const adminPassword = import.meta.env.VITE_ADMIN_PASSWORD;
 
+    console.log('Email:', email, 'Admin Email:', adminEmail);
+    console.log('Password:', password, 'Admin Password:', adminPassword);
+
     if (email === adminEmail && password === adminPassword) {
       setIsAuthenticated(true);
       localStorage.setItem('admin_auth', 'true');
